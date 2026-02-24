@@ -356,11 +356,14 @@ return {
                         widget:setChecked(false)
                     end
                 end
+                -- Set native cursor mode flag
+                g_mouse.setUseNativeCursor(true)
                 -- Push cursor to mark as changed (prevents game from overriding)
                 g_mouse.pushCursor('window')
                 -- Then restore to native Windows cursor
                 g_window.restoreMouseCursor()
             else
+                g_mouse.setUseNativeCursor(false)
                 g_mouse.popCursor('window')
             end
         end

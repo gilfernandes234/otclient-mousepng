@@ -37,12 +37,16 @@ public:
     bool isCursorChanged();
     bool isPressed(Fw::MouseButton mouseButton);
     int getCursorId(const std::string& name);
+    
+    void setUseNativeCursor(bool useNative) { m_useNativeCursor = useNative; }
+    bool isUsingNativeCursor() const { return m_useNativeCursor; }
 
 private:
     void checkStackSize();
 
     stdext::map<std::string, int> m_cursors;
     std::deque<int> m_cursorStack;
+    bool m_useNativeCursor{ false };
 };
 
 extern Mouse g_mouse;

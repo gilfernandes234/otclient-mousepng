@@ -966,6 +966,50 @@ void WIN32Window::restoreMouseCursor()
     });
 }
 
+void WIN32Window::setSystemCursor(const std::string& cursorName)
+{
+    g_mainDispatcher.addEvent([this, cursorName] {
+        LPCTSTR cursorId = IDC_ARROW;
+        
+        if (cursorName == "arrow" || cursorName == "default") {
+            cursorId = IDC_ARROW;
+        } else if (cursorName == "horizontal" || cursorName == "sizewe") {
+            cursorId = IDC_SIZEWE;  // Horizontal resize cursor (↔)
+        } else if (cursorName == "vertical" || cursorName == "sizens") {
+            cursorId = IDC_SIZENS;  // Vertical resize cursor (↕)
+        } else if (cursorName == "diagonal1" || cursorName == "sizenwse") {
+            cursorId = IDC_SIZENWSE;  // Diagonal resize cursor (↖↘)
+        } else if (cursorName == "diagonal2" || cursorName == "sizenesw") {
+            cursorId = IDC_SIZENESW;  // Diagonal resize cursor (↗↙)
+        } else if (cursorName == "move" || cursorName == "sizeall") {
+            cursorId = IDC_SIZEALL;  // Move cursor (four-directional arrows)
+        } else if (cursorName == "text" || cursorName == "ibeam" || cursorName == "textselect") {
+            cursorId = IDC_IBEAM;   // Text cursor/Text Select
+        } else if (cursorName == "hand" || cursorName == "pointer" || cursorName == "link" || cursorName == "linkselect") {
+            cursorId = IDC_HAND;    // Hand/pointer cursor/Link Select
+        } else if (cursorName == "cross" || cursorName == "precision" || cursorName == "precisionselect") {
+            cursorId = IDC_CROSS;   // Crosshair cursor/Precision Select
+        } else if (cursorName == "wait" || cursorName == "hourglass") {
+            cursorId = IDC_WAIT;    // Wait/hourglass cursor
+        } else if (cursorName == "no" || cursorName == "forbidden" || cursorName == "unavailable") {
+            cursorId = IDC_NO;      // No/prohibited cursor
+        } else if (cursorName == "help") {
+            cursorId = IDC_HELP;    // Help cursor (arrow with question mark)
+        } else if (cursorName == "appstarting") {
+            cursorId = IDC_APPSTARTING;  // App starting cursor (arrow with hourglass)
+        } else if (cursorName == "uparrow") {
+            cursorId = IDC_UPARROW;  // Vertical arrow cursor
+        }
+        
+        const HCURSOR systemCursor = LoadCursor(nullptr, cursorId);
+        if (systemCursor) {
+            m_cursor = systemCursor;
+            SetCursor(systemCursor);
+            ShowCursor(true);
+        }
+    });
+}
+
 void WIN32Window::setTitle(const std::string_view title)
 {
     g_mainDispatcher.addEvent([&, title = std::string{ title }] {
